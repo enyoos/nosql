@@ -1,0 +1,10 @@
+LICENSE
+README.md
+pyproject.toml
+src/simple_nosql_enyos/__init__.py
+src/simple_nosql_enyos/cypher.py
+src/simple_nosql_enyos/w_out_sql.py
+src/simple_nosql_enyos.egg-info/PKG-INFO
+src/simple_nosql_enyos.egg-info/SOURCES.txt
+src/simple_nosql_enyos.egg-info/dependency_links.txt
+src/simple_nosql_enyos.egg-info/top_level.txt

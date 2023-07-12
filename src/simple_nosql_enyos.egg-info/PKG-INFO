@@ -1,3 +1,17 @@
+Metadata-Version: 2.1
+Name: simple-nosql-enyos
+Version: 0.0.1
+Summary: A simple nosql json storage for small or big projects.
+Author-email: enyos <lebedevhh@outlook.fr>
+Project-URL: Homepage, https://github.com/enyoos/nosql
+Project-URL: Bug Tracker, https://github.com/enyoos/nosql/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
 # project
 
 ## What ?
@@ -8,7 +22,6 @@ read the docs.md file.
 
 ## Quickstart ( simple example )
 ```python
-from w_out_sql import Database, Collection
 my_password = "hello world" # for cipher coding ( key )
 path = "./default.pst"      # use the pst extension
 my_db = Database (__pass =  password, path = path)
