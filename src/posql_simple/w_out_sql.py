@@ -4,7 +4,7 @@ import time
 import uuid
 from os.path import exists, basename
 import os
-from cypher import  gen_cipher_file, gen_decypher_file
+from cypher import gen_cipher_file, gen_decypher_file
 from pathlib import Path
 
 LOCK = threading.Lock()

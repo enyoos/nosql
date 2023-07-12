@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "poslq_simple"
-version = "0.1.1"
+version = "0.1.2"
 authors = [
   { name="enyos", email="lebedevhh@outlook.fr" },
 ]
