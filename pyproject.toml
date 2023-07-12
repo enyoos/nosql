@@ -3,12 +3,12 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "nosqllib"
-version = "0.0.1"
+name = "poslq_simple"
+version = "0.1.1"
 authors = [
   { name="enyos", email="lebedevhh@outlook.fr" },
 ]
-description = "A simple nosql json storage for small or big projects."
+description = "A simple nosql json storage for small projects."
 readme = "README.md"
 requires-python = ">=3.7"
 classifiers = [

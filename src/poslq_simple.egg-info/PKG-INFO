@@ -1,7 +1,7 @@
 Metadata-Version: 2.1
-Name: nosqllib
-Version: 0.0.1
-Summary: A simple nosql json storage for small or big projects.
+Name: poslq-simple
+Version: 0.1.1
+Summary: A simple nosql json storage for small projects.
 Author-email: enyos <lebedevhh@outlook.fr>
 Project-URL: Homepage, https://github.com/enyoos/nosql
 Project-URL: Bug Tracker, https://github.com/enyoos/nosql/issues

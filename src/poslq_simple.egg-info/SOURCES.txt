@@ -1,0 +1,10 @@
+LICENSE
+README.md
+pyproject.toml
+src/poslq_simple.egg-info/PKG-INFO
+src/poslq_simple.egg-info/SOURCES.txt
+src/poslq_simple.egg-info/dependency_links.txt
+src/poslq_simple.egg-info/top_level.txt
+src/posql_simple/__init__.py
+src/posql_simple/cypher.py
+src/posql_simple/w_out_sql.py
