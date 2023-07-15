@@ -38,6 +38,7 @@ Throws FileNotFoundError err if the file doesn't exist and ( or ) InvalidFileExt
 ``bind_new_collection`` binds the collection to the database object ( for data persistence ). Takes a collection as Param.
 
 ``get_collection`` returns a collection object. Args : coll_name ( name of the collection ).
+``get_collections`` returns a dict with all the collections. 
 
 ## Collection
 __init__ method requires a name ( collect_name ),

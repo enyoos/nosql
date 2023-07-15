@@ -8,23 +8,6 @@ from pathlib import Path
 
 LOCK = threading.Lock()
 
-
-# special to handling the char
-class UInt8:
-    def __init__ ( self, value ):
-        self.value = value
-
-    def __int__(self):
-        if ( self.value < 32 ):
-            return 126
-        elif ( self.value > 126 ):
-            return 32
-
-    def __repr__(self):
-        return "the current value : " + self.value
-
-
-
 # the cypher class
 class Cypher:
      
@@ -33,28 +16,31 @@ class Cypher:
         return str(uuid.uuid4().fields[-1])[:5]
 
     @staticmethod
-    def __gen_cypher ( content : str, offset : int ) -> str :
+    def gen_cypher ( content : str, offset : int ) -> str :
         changed_content = "" 
         for ch in content:
             if ( ch == '\n'):
                 changed_content += '\n'
             else :
-                changed_content += str ( Cypher.__offset_ch( ch, offset ) )
+                changed_content += ( Cypher.__offset_ch( ch = ch, offset=offset ) )
 
         return changed_content
 
     @staticmethod
     def __offset_ch( ch : str , offset : int ) -> str :
-        ascii_code = ord ( ch )
-        return chr ( int ( UInt8(ascii_code + offset ) ))
+        print ( 'the value of the offset var : ', offset )
+        ascii_code = int ( ord ( ch ) )
+        offset = int( offset ) # this is so weird
+        char = chr ( ( (ascii_code + offset ) ))
+        return char
 
     @staticmethod
     def __offset_ch_inv( ch : str, offset : int ) -> str :
         ascii_code = ord ( ch )
-        return chr ( abs ( int ( UInt8( ascii_code - offset ) ) ) ) 
+        return chr ( abs ( ( ( ascii_code - offset ) ) ) ) 
 
     @staticmethod
-    def __gen_decypher( content : str , key : int ):
+    def gen_decypher( content : str , key : int ):
         org_content = ""
         for ch in content:
             if not ( ch == '\n'):
@@ -62,30 +48,6 @@ class Cypher:
             else:
                 org_content += '\n'
         return org_content
-
-    @staticmethod
-    def gen_cipher_file( file_handler , key):
-        # r+ for reading and writing
-        # leave all the closing to the caller
-        contents = file_handler.readlines()
-        print ( "teh content of the file : ", contents )
-        # this is a list of sentences
-        crypted_contents = []
-
-        for content in contents:
-            crypted_contents.append(Cypher.__gen_cypher( content, key ))
-
-        file_handler.write( ''.join( crypted_contents ) )
-
-    @staticmethod
-    def gen_decypher_file( file_handler, key) -> str :
-        contents = file_handler.readlines()
-        org_contents = []
-        
-        for content in contents :
-            org_contents.append ( Cypher.__gen_decypher( content, key ) )
-    
-        return ''.join( org_contents )  # joining the space will add a space between each element
 
 # custom error class
 class InvalidFileExtensionError( Exception ):
@@ -110,23 +72,12 @@ class Database:
         obj_serialized = json.dumps( self.__data )
         # issue : always on save we write the whole object ( maybe implement some cache ? )
         with open(self.path , "r+") as y:
-            y.write(obj_serialized) # transforms the __data props into a string
+            y.write(Cypher.gen_cypher(coobj_serialized, self.__pass))
             length_byte_written = len( obj_serialized ) * 8
             log_message = "data saved on file {fname} [written : {data_length} bytes ]".format(fname=self.path, data_length=length_byte_written)
             if (debug):
                 print (log_message )
-            Cypher.gen_cipher_file(y, self.__pass )
             y.close()
-
-    # private method ( with the two underscores )
-    @staticmethod
-    def __parse_file_content( filename : str, key : str ) :
-        with open(filename , "r+") as y:
-            __decrypted_data = Cypher.gen_decypher_file(y, key)
-            str__ = '\n'.join(__decrypted_data) # the readlines mehtod returns an array ( so you must polish it first )
-            __data = json.loads( str__ )
-            y.close()
-            return __data
 
     # throws an exception
     @staticmethod
@@ -134,8 +85,10 @@ class Database:
         # we need to check if the file is encrypted ( if yes, then decrypt )
         if (exists( path ) ):
             if path[-4:] == ".pst":
-                __data = Database.__parse_file_content( path )
-                return Database(__data , path)
+                with open ( path, "r") as file : 
+                    data = file.readlines()
+                    data = Cypher.gen_decypher(content=data, key=decrypt_pass)
+                    return Database(__data = data, path = path, __pass = decrypt_pass )
             else :
                 raise InvalidFileExtensionError
         else:
@@ -237,11 +190,4 @@ class Collection:
     
 
 if __name__ == "__main__":
-    db = Database("hello wordl", path="h.pst")
-    cllct = Collection( collect_name="clients")
-    db.bind_new_collection( cllct )
-    # ascii_code_ch = ord( ch )
-    # _ = chr ( ascii_code_ch + 66 )
-    # print ( _ , type ( _ ))
-    # with open( 'h.pst', 'w') as f : # creates a file just in the write mode
-    #     print ( f )
+    print ( "hello wordl " )
