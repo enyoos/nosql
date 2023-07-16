@@ -1,5 +1,7 @@
 # project
 
+Looking for contributions.
+
 ## What ?
 really simple no-sql database ( for small projects ) using json.
 
@@ -62,4 +64,4 @@ each dict ) and the slot_value. Returns None if not found.
 
 ``get_all_slot`` : returns a list of all the entries.
 
-**this lib supports multithreading env by using synchronization.**
+**this lib supports multithreading queries by using synchronization.**
