@@ -10,7 +10,7 @@ read the docs.md file.
 
 ## Quickstart ( simple example )
 ```python
-from w_out_sql import Database, Collection
+from posql_simple import w_out_sql.py
 my_password = "hello world" # for cipher coding ( key )
 path = "./default.pst"      # use the pst extension
 my_db = Database (__pass =  password, path = path)

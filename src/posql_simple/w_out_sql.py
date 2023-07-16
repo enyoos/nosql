@@ -54,7 +54,7 @@ class Database:
         return "path : {path_name}, collections : {coll}".format( path_name = self.path, coll = self.__data )
 
     def bind_new_collection(self, collection ):
-        self.__data[collection.collect_name] = collection._get_all_slot()
+        self.__data[collection.collect_name] = collection.get_all_slot()
         self.save(debug = False)
 
     def get_collection(self, coll_name : str ):
@@ -71,7 +71,7 @@ class Database:
         return self.__data
 
 class Collection:
-    def __init__(self, collect_name : str , __container_documents : list = []):
+    def __init__(self, collect_name : str , __container_documents : list = []): # by default is list ( not None )
         self.collect_name=collect_name
         self.__container_documents = __container_documents# empty list to stores one all the documents
     
@@ -126,10 +126,10 @@ class Collection:
 
         if found : 
             self.__container_documents[counter] = cpy_new_obj
-            lock.acquire()
+            lock.release()
             return True 
 
-        lock.acquire()
+        lock.release()
         return False 
 
     # the user will provide the search function
@@ -142,5 +142,5 @@ class Collection:
         return None
 
     # getter
-    def _get_all_slot(self):
+    def get_all_slot(self):
         return self.__container_documents

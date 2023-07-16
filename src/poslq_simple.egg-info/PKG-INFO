@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: poslq-simple
-Version: 0.1.2
+Version: 0.1.3
 Summary: A simple nosql json storage for small projects.
 Author-email: enyos <lebedevhh@outlook.fr>
 Project-URL: Homepage, https://github.com/enyoos/nosql
@@ -13,6 +13,8 @@ Description-Content-Type: text/markdown
 License-File: LICENSE
 
 # project
+
+Looking for contributions.
 
 ## What ?
 really simple no-sql database ( for small projects ) using json.
@@ -52,6 +54,7 @@ Throws FileNotFoundError err if the file doesn't exist and ( or ) InvalidFileExt
 ``bind_new_collection`` binds the collection to the database object ( for data persistence ). Takes a collection as Param.
 
 ``get_collection`` returns a collection object. Args : coll_name ( name of the collection ).
+``get_collections`` returns a dict with all the collections. 
 
 ## Collection
 __init__ method requires a name ( collect_name ),
@@ -75,4 +78,4 @@ each dict ) and the slot_value. Returns None if not found.
 
 ``get_all_slot`` : returns a list of all the entries.
 
-**this lib supports multithreading env by using synchronization.**
+**this lib supports multithreading queries by using synchronization.**
