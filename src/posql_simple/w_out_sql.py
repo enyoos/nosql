@@ -94,7 +94,7 @@ class Collection:
         try : 
             add_thing = record.copy()
             if not ("_id" in list(add_thing.keys())):
-                add_thing['_id'] = Cypher.generate_random_id()            
+                add_thing['_id'] = self.generate_random_id()            
             self.__container_documents.append(add_thing)
             LOCK.release() 
             return True 
@@ -154,6 +154,10 @@ class Collection:
                 return slot.copy() 
         return None
 
+    def generate_random_id( self, ) -> str:
+        return str ( uuid.uuid4() )
+
     # getter
     def get_all_slot(self):
         return self.__container_documents
+
