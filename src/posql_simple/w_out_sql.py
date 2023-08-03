@@ -58,7 +58,7 @@ class Database:
         self.save(debug = False)
 
     def get_collection(self, coll_name : str ):
-        if ( col_name in list(self.__data.keys())):
+        if ( coll_name in list(self.__data.keys())):
             return Collection( coll_name, self.__data[coll_name])
         else :
             print ( "[INFO] this is collection doesn't exist")
