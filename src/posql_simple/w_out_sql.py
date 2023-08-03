@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 
 LOCK = threading.Lock()
+# bool
 
 # custom error class
 class InvalidFileExtensionError( Exception ):
@@ -14,16 +15,27 @@ class InvalidFileExtensionError( Exception ):
     pass
 
 class Database:
+    WC_MSG = True
+    DEBUG = True
     # for ezz mig \ you can pass directly the data
     # need to input the password ( for decrypting the file )
-    def __init__(self, __data : dict = {}, path : str = "./default.pst"):
-        self.__data=__data # this holds all the collections
+    def __init__(self, data: dict = {}, path : str = "./default.pst"):
+        self.__data= data # this holds all the collections
         self.path = path
-        print ( "thanks for using this library..." )
+        if ( Database.WC_MSG ):
+            print ( "thanks for using this library..." )
           
+    @staticmethod
+    def offW ( ):
+        Database.WC_MSG = not ( Database.WC_MSG )
+
+    @staticmethod
+    def offD ( ):
+        Database.DEBUG = not ( Database.DEBUG )
+
     # persisting the collect obj 
     # Want to debug ( the message on the console ) -> YES ( leave the debug param to true ) : NO  -> ( make false ) 
-    def save(self, debug : bool = True ):
+    def save(self):
         # try and catch ? 
         obj_serialized = json.dumps( self.__data )
         # issue : always on save we write the whole object ( maybe implement some cache ? )
@@ -31,7 +43,7 @@ class Database:
             y.write(obj_serialized)
             length_byte_written = len( obj_serialized ) * 8
             log_message = "data saved on file {fname} [written : {data_length} bytes ]".format(fname=self.path, data_length=length_byte_written)
-            if (debug):
+            if (Database.DEBUG):
                 print (log_message )
             y.close()
 
@@ -43,8 +55,9 @@ class Database:
             if path[-4:] == ".pst":
                 with open ( path, "r") as file : 
                     data = file.readlines()
-                    data = json.loads( data )
-                    return Database(__data = data, path = path )
+                    data = ''.join( data )
+                    data = json.loads( str ( data ) )
+                    return Database(data= data, path = path )
             else :
                 raise InvalidFileExtensionError
         else:
@@ -55,7 +68,7 @@ class Database:
 
     def bind_new_collection(self, collection ):
         self.__data[collection.collect_name] = collection.get_all_slot()
-        self.save(debug = False)
+        self.save()
 
     def get_collection(self, coll_name : str ):
         if ( coll_name in list(self.__data.keys())):
@@ -77,30 +90,30 @@ class Collection:
     
     def add_record(self, record : dict ) -> bool :
         # we need to check / if it has the _id prop
-        lock.acquire()
+        LOCK.acquire()
         try : 
             add_thing = record.copy()
             if not ("_id" in list(add_thing.keys())):
-                add_thing['_id'] = Cypher.generate_random_id()            
+                add_thing['_id'] = self.generate_random_id()            
             self.__container_documents.append(add_thing)
-            lock.release() 
+            LOCK.release() 
             return True 
         except:
-            lock.release() 
+            LOCK.release() 
             return False 
             
     def __repr__(self):
         return str(self.__container_documents)
 
     def delete_by_id (self, id : int ) -> bool :
-        lock.acquire()
+        LOCK.acquire()
         for slot in self.__container_documents :
             if ( slot["_id"] == id ):
                 self.__container_documents.remove( slot )
-                lock.release() 
+                LOCK.release() 
                 return True 
 
-        lock.release() 
+        LOCK.release() 
         return False
 
     # returns a copy object
@@ -112,7 +125,7 @@ class Collection:
         return None  
 
     def update_obj(self, new_obj : dict) -> bool :
-        lock.acquire()
+        LOCK.acquire()
         counter = 0
         cpy_new_obj = new_obj.copy() # immutability
         target_id = cpy_new_obj["_id"]
@@ -126,10 +139,10 @@ class Collection:
 
         if found : 
             self.__container_documents[counter] = cpy_new_obj
-            lock.release()
+            LOCK.release()
             return True 
 
-        lock.release()
+        LOCK.release()
         return False 
 
     # the user will provide the search function
@@ -141,6 +154,10 @@ class Collection:
                 return slot.copy() 
         return None
 
+    def generate_random_id( self, ) -> str:
+        return str ( uuid.uuid4() )
+
     # getter
     def get_all_slot(self):
         return self.__container_documents
+
